@@ -1,0 +1,11 @@
+Player 1 Controller
+LXAXIS1	Player 1 Left Joystick X Axis	3	SLIDER	x	0	1.0	0.2
+LYAXIS1	Player 1 Left Joystick Y Axis	3	SLIDER	y	0	1.0	0.2
+RXAXIS1	Player 1 Right Joystick X Axis	3	SLIDER	rx	0	1.0	0.2
+RYAXIS1	Player 1 Right Joystick Y Axis	3	SLIDER	ry	0	1.0	0.2
+A1	Player 1 A Button	1	BUTTON	0	0	0.0	0.0
+B1	Player 1 B Button	1	BUTTON	1	0	0.0	0.0
+X1	Player 1 X Button	1	BUTTON	2	0	0.0	0.0
+Y1	Player 1 Y Button	1	BUTTON	3	0	0.0	0.0
+LTRIGGER1	Player 1 Left Trigger	3	SLIDER	z	0	1.0	0.0
+RTRIGGER1	Player 1 Right Trigger	3	SLIDER	rz	0	1.0	0.0

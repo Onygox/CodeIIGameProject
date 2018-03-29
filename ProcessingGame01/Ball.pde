@@ -17,7 +17,7 @@ class Ball {
     ellipse(location.x, location.y, radius*2, radius*2);
     if (location.x - radius >= 0 && location.x + radius <= 800 &&
         location.y - radius >= 0 && location.y + radius <= 800) {
-      velocity = new PVector(gpad.getSlider("RXAXIS").getValue() * 5, gpad.getSlider("RYAXIS").getValue() * 5);
+      velocity = new PVector(gpad.getSlider("RXAXIS1").getValue() * 5, gpad.getSlider("RYAXIS1").getValue() * 5);
     }
     location.add(velocity);
     if (location.x - radius < 0) {

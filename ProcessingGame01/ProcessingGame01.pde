@@ -2,10 +2,6 @@ import org.gamecontrolplus.gui.*;
 import org.gamecontrolplus.*;
 import net.java.games.input.*;
 
-ControlIO control;
-Configuration config;
-ControlDevice gpad;
-
 Ball ball01;
 PShape wall01, wall02, wall03, wall04, wall05, wall06, wall07, wall08, wall09, wall10, wall11, wall12, wall13, wall14, wall15, wall16, wall17, wall18;
 PShape wall19, wall20, wall21, wall22, wall23, wall24, wall25, wall26, wall27, wall28, wall29, wall30, wall31, wall32, wall33, wall34, wall35, wall36;
@@ -13,6 +9,8 @@ PShape wall19, wall20, wall21, wall22, wall23, wall24, wall25, wall26, wall27, w
 int whichWallX, whichWallY;
 boolean wallSwitchX, wallSwitchY, isSecond;
 ArrayList<Square> wallSquares;
+
+ControlDevice gpad;
 
 void setup() {
   
@@ -22,14 +20,7 @@ void setup() {
   wallSquares = new ArrayList<Square>();
   ball01 = new Ball(new PVector(200, 200), new PVector(0, 0), 10);
   
-  // Initialize the ControlIO
-  control = ControlIO.getInstance(this);
-  // Find a device that matches the configuration file
-  gpad = control.getMatchedDevice("playercontroller");
-  if (gpad == null) {
-    println("No suitable device configured");
-    System.exit(-1); // End the program NOW!
-  }
+  ControlDevice gpad = getGamepad();
   
   whichWallX = 3;
   whichWallY = 0;
@@ -82,7 +73,7 @@ void draw() {
   ball01.displayBall();
   
   //move left joystick to choose wall block
-  if (gpad.getSlider("LXAXIS").getValue() == 1 && !wallSwitchX) {
+  if (gpad.getSlider("LXAXIS1").getValue() == 1 && !wallSwitchX) {
     if (whichWallY == 0 || whichWallY == 9) {
       whichWallX++;
       println(whichWallX, whichWallY);
@@ -91,7 +82,7 @@ void draw() {
     }
     wallSwitchX = true;
   }
-  if (gpad.getSlider("LXAXIS").getValue() == -1 && !wallSwitchX) {
+  if (gpad.getSlider("LXAXIS1").getValue() == -1 && !wallSwitchX) {
     if (whichWallY == 0 || whichWallY == 9) {
       whichWallX--;
       println(whichWallX, whichWallY);
@@ -100,7 +91,7 @@ void draw() {
     }
     wallSwitchX = true;
   }
-  if (gpad.getSlider("LYAXIS").getValue() == 1 && !wallSwitchY) {
+  if (gpad.getSlider("LYAXIS1").getValue() == 1 && !wallSwitchY) {
     if (whichWallX == 0 || whichWallX == 9) {
       whichWallY++;
       println(whichWallX, whichWallY);
@@ -109,7 +100,7 @@ void draw() {
     }
     wallSwitchY = true;
   }
-  if (gpad.getSlider("LYAXIS").getValue() == -1 && !wallSwitchY) {
+  if (gpad.getSlider("LYAXIS1").getValue() == -1 && !wallSwitchY) {
     if (whichWallX == 0 || whichWallX == 9) {
       whichWallY--;
       println(whichWallX, whichWallY);
@@ -118,10 +109,10 @@ void draw() {
     }
     wallSwitchY = true;
   }
-  if (gpad.getSlider("LXAXIS").getValue() < .1 && gpad.getSlider("LXAXIS").getValue() > -.1) {
+  if (gpad.getSlider("LXAXIS1").getValue() < .1 && gpad.getSlider("LXAXIS1").getValue() > -.1) {
     wallSwitchX = false;
   }
-  if (gpad.getSlider("LYAXIS").getValue() < .1 && gpad.getSlider("LYAXIS").getValue() > -.1) {
+  if (gpad.getSlider("LYAXIS1").getValue() < .1 && gpad.getSlider("LYAXIS1").getValue() > -.1) {
     wallSwitchY = false;
   }
   if (whichWallX < 0) {

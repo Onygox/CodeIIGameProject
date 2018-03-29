@@ -30,7 +30,7 @@ class Square {
       fill (200, 20, 20);
     } else if (whichWallX == wallPos.x && whichWallY == wallPos.y) {
       fill(0);
-      if (gpad.getButton("A").pressed()) {
+      if (gpad.getButton("A1").pressed()) {
         if (isSecond) {
           for (int i = 0; i < wallSquares.size(); i++) {
             wallSquares.get(i).isSelected2 = false;
