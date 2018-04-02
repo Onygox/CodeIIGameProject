@@ -1,92 +1,107 @@
 // wengwengweng
 
-class Biker extends Entity {
+class Biker extends Item {
 
-	World world;
+	PImage tile;
 	int index;
-	PVector pos;
 	int dir;
-	float speed;
-	color c;
+	int length;
+	boolean turned;
+	boolean teleported;
 	ArrayList<Trail> trails;
 
-	Biker(Entity parent, World world, int index, float x, float y, int dir) {
+	Biker(System system, int x, int y, int index, int dir) {
 
-		super(parent);
-
-		// set world
-		this.world = world;
-
-		// set player index
+		super(system, x, y);
 		this.index = index;
-
-		// set init dir
+		this.tile = loadImage("biker" + Integer.toString(this.index) + ".png");
 		this.dir = dir;
-
-		// set init pos
-		this.pos = new PVector(x, y);
-
-		// set init speed
-		this.speed = 2;
-
-		// set color
-		color[] cs = new color[]{ color(0, 255, 255), color(255, 0, 255) };
-
-		this.c = cs[this.index];
-
-		// set init trail
+		this.turned = false;
+		this.teleported = false;
+		this.length = 32;
 		this.trails = new ArrayList<Trail>();
-		this.trails.add(new Trail(this, this.world, this.pos.x, this.pos.y, this.c));
-
-		// set init dir
-		this.turn(dir);
 
 	}
 
 	void turn(int dir) {
 
-		// only turn neighbor
-		if (Math.abs(this.dir - dir) == 2) {
-			return;
+		if (Math.abs(this.dir - dir) != 2 && this.dir != dir) {
+			this.dir = dir;
+			this.turned = true;
 		}
-
-		// turn to dir
-		this.dir = dir;
-
-		// add a new trail
-		this.trails.add(new Trail(this, this.world, this.pos.x, this.pos.y, this.c));
 
 	}
 
-	void ouch() {
+	void tick() {
 
-		print("ouch");
+		this.trails.add(new Trail(this.system, this.x, this.y, this.index, this.dir));
+
+		if (this.trails.size() > this.length) {
+			this.trails.get(0).remove();
+			this.trails.remove(0);
+		}
+
+		if (this.turned) {
+			this.turned = false;
+			this.trails.get(this.trails.size() - 1).show = false;
+		}
+
+		if (this.dir == 3) {
+			this.x = this.x - 1;
+		} else if (this.dir == 1) {
+			this.x = this.x + 1;
+		} else if (this.dir == 0) {
+			this.y = this.y - 1;
+		} else if (this.dir == 2) {
+			this.y = this.y + 1;
+		}
+
+		this.bound();
+		this.check();
+		this.teleported = false;
 
 	}
 
 	void draw() {
 
-		// move towards dir
-		this.pos.add(PVector.fromAngle(radians(this.dir * 90)).mult(this.speed));
-
-		// update current trail
-		Trail current = this.trails.get(this.trails.size() - 1);
-
-		current.extend(this.pos.x, this.pos.y);
-
-		// trail updates
-		for (int i = 0; i < this.trails.size(); i++) {
-			this.trails.get(i).update();
-		}
-
-		// draw trails
 		for (int i = 0; i < this.trails.size(); i++) {
 			this.trails.get(i).draw();
 		}
 
-		// draw self
-		fill(this.c);
-		rect(this.pos.x, this.pos.y, 12, 12);
+		this.push();
+		this.rot(this.dir);
+		image(this.tile, 0, 0, this.size, this.size);
+		this.pop();
+
+	}
+
+	void ouch(Item i) {
+
+		if (i instanceof Trail) {
+
+			Trail t = (Trail) i;
+
+			if (t.index != this.index) {
+				this.system.over = true;
+			}
+
+		} else if (i instanceof Portal) {
+
+			if (this.teleported) {
+				return;
+			}
+
+			Portal p = (Portal) i;
+
+			if (p.dest != null) {
+
+				this.teleported = true;
+				this.x = p.dest.x;
+				this.y = p.dest.y;
+
+			}
+
+		}
 
 	}
 

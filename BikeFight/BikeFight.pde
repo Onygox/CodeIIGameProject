@@ -1,18 +1,25 @@
 // wengwengweng
 
-Game game;
+System system;
 
 void setup() {
 
-	size(640, 640);
+	size(720, 720);
 	rectMode(CENTER);
-	game = new Game();
+	imageMode(CENTER);
+	textFont(createFont("04b03.ttf", 32));
+
+	frameRate(7);
+
+	system = new System();
 
 }
 
 void draw() {
 
 	background(0);
-	game.draw();
+
+	system.update();
+	system.draw();
 
 }

@@ -1,56 +1,32 @@
 // wengwengweng
 
-class Trail extends Entity {
+class Trail extends Item {
 
-	Line line;
-	World world;
-	float x1;
-	float y1;
-	float x2;
-	float y2;
-	color c;
+	PImage tile;
+	int index;
+	int dir;
+	boolean show;
 
-	Trail(Entity parent, World world, float x, float y, color c) {
+	Trail(System system, int x, int y, int index, int dir) {
 
-		super(parent);
-		this.world = world;
-		this.line = new Line(this, this.world, x, y, x, y);
-		this.c = c;
-
-	}
-
-	void extend(float x, float y) {
-
-		this.line.set(this.line.x1, this.line.y1, x, y);
-
-	}
-
-	void update() {
-
-		this.line.update();
-
-		ArrayList<Body> cols = this.line.getCollisions();
-
-		for (int i = 0; i < cols.size(); i++) {
-
-			Entity other = cols.get(i).entity;
-
-			if (other instanceof Trail) {
-				if (other.parent != this.parent) {
-					println("ouch");
-					// this.parent.ouch();
-				}
-			}
-
-		}
+		super(system, x, y);
+		this.index = index;
+		this.dir = dir;
+		this.show = true;
+		this.tile = loadImage("trail" + Integer.toString(this.index) + ".png");
 
 	}
 
 	void draw() {
 
-		stroke(this.c);
-		strokeWeight(3);
-		this.line.draw();
+		if (!this.show) {
+			return;
+		}
+
+		this.push();
+		this.rot(this.dir);
+		image(this.tile, 0, 0, this.size, this.size);
+		this.pop();
 
 	}
 
