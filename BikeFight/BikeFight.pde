@@ -4,16 +4,21 @@ System system;
 
 void setup() {
 
-	size(640, 640);
-	system = new System();
+	size(720, 720);
+	rectMode(CENTER);
 	imageMode(CENTER);
-	frameRate(6);
+	textFont(createFont("04b03.ttf", 32));
+
+	frameRate(7);
+
+	system = new System();
 
 }
 
 void draw() {
 
 	background(0);
+
 	system.update();
 	system.draw();
 

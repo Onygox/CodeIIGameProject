@@ -1,19 +1,28 @@
 // wengwengweng
 
-class Grid {
+class Item {
 
 	System system;
 	int x;
 	int y;
 	int size;
 
-	Grid(System system, int x, int y) {
+	Item(System system, int x, int y) {
 
 		this.system = system;
 		this.x = x;
 		this.y = y;
 		this.size = this.system.size;
+		this.register();
 
+	}
+
+	void register() {
+		this.system.add(this);
+	}
+
+	void remove() {
+		this.system.remove(this);
 	}
 
 	void bound() {
@@ -33,19 +42,42 @@ class Grid {
 	}
 
 	void push() {
+
 		pushMatrix();
 		translate(this.x * this.size, this.y * this.size);
+
 	}
 
 	void rot(int r) {
+
 		rotate(radians(r * 90));
+
 	}
 
 	void pop() {
+
 		popMatrix();
+
+	}
+
+	void check() {
+
+		for (int i = 0; i < this.system.items.size(); i++) {
+
+			Item item = this.system.items.get(i);
+
+			if (this.x == item.x && this.y == item.y) {
+				if (item != this) {
+					this.ouch(item);
+				}
+			}
+
+		}
+
 	}
 
 	void tick() {}
 	void draw() {}
+	void ouch(Item i) {}
 
 }

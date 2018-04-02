@@ -1,12 +1,13 @@
 // wengwengweng
 
-class Biker extends Grid {
+class Biker extends Item {
 
 	PImage tile;
 	int index;
 	int dir;
 	int length;
-	boolean just;
+	boolean turned;
+	boolean teleported;
 	ArrayList<Trail> trails;
 
 	Biker(System system, int x, int y, int index, int dir) {
@@ -15,8 +16,9 @@ class Biker extends Grid {
 		this.index = index;
 		this.tile = loadImage("biker" + Integer.toString(this.index) + ".png");
 		this.dir = dir;
-		this.just = false;
-		this.length = 24;
+		this.turned = false;
+		this.teleported = false;
+		this.length = 32;
 		this.trails = new ArrayList<Trail>();
 
 	}
@@ -25,25 +27,22 @@ class Biker extends Grid {
 
 		if (Math.abs(this.dir - dir) != 2 && this.dir != dir) {
 			this.dir = dir;
-			this.just = true;
+			this.turned = true;
 		}
 
 	}
 
 	void tick() {
 
-		for (int i = 0; i < this.trails.size(); i++) {
-			this.trails.get(i).tick();
-		}
-
 		this.trails.add(new Trail(this.system, this.x, this.y, this.index, this.dir));
 
 		if (this.trails.size() > this.length) {
+			this.trails.get(0).remove();
 			this.trails.remove(0);
 		}
 
-		if (this.just) {
-			this.just = false;
+		if (this.turned) {
+			this.turned = false;
 			this.trails.get(this.trails.size() - 1).show = false;
 		}
 
@@ -58,6 +57,8 @@ class Biker extends Grid {
 		}
 
 		this.bound();
+		this.check();
+		this.teleported = false;
 
 	}
 
@@ -71,6 +72,36 @@ class Biker extends Grid {
 		this.rot(this.dir);
 		image(this.tile, 0, 0, this.size, this.size);
 		this.pop();
+
+	}
+
+	void ouch(Item i) {
+
+		if (i instanceof Trail) {
+
+			Trail t = (Trail) i;
+
+			if (t.index != this.index) {
+				this.system.over = true;
+			}
+
+		} else if (i instanceof Portal) {
+
+			if (this.teleported) {
+				return;
+			}
+
+			Portal p = (Portal) i;
+
+			if (p.dest != null) {
+
+				this.teleported = true;
+				this.x = p.dest.x;
+				this.y = p.dest.y;
+
+			}
+
+		}
 
 	}
 

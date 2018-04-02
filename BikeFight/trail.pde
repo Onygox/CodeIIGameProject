@@ -1,6 +1,6 @@
 // wengwengweng
 
-class Trail extends Grid {
+class Trail extends Item {
 
 	PImage tile;
 	int index;
