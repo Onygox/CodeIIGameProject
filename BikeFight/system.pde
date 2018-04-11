@@ -9,57 +9,32 @@ class System {
 	ArrayList<Biker> bikers;
 	ArrayList<Portal> portals;
 	PImage tile;
-	boolean over = false;
+	int winner;
+	boolean started;
 
 	System() {
 
 		this.w = 24;
 		this.h = 24;
+		this.started = false;
 		this.size = width / this.w;
 		this.tile = loadImage("tile.png");
+		this.init();
+
+	}
+
+	void init() {
+
+		this.winner = 999;
 		this.items = new ArrayList<Item>();
 		this.bikers = new ArrayList<Biker>();
 		this.bikers.add(new Biker(this, 4, 4, 0, 1));
 		this.bikers.add(new Biker(this, 12, 12, 1, 3));
 		this.portals = new ArrayList<Portal>();
 
-		for (int i = 0; i < 6; i++) {
-			this.port((int)(random(this.w)), (int)(random(this.h)));
-		}
-
 	}
 
 	void update() {
-
-		if (keyPressed) {
-
-			if (key == CODED) {
-
-				if (keyCode == UP) {
-					this.bikers.get(1).turn(0);
-				} else if (keyCode == DOWN) {
-					this.bikers.get(1).turn(2);
-				} else if (keyCode == LEFT) {
-					this.bikers.get(1).turn(3);
-				} else if (keyCode == RIGHT) {
-					this.bikers.get(1).turn(1);
-				}
-
-			} else {
-
-				if (key == 'w') {
-					this.bikers.get(0).turn(0);
-				} else if (key == 's') {
-					this.bikers.get(0).turn(2);
-				} else if (key == 'a') {
-					this.bikers.get(0).turn(3);
-				} else if (key == 'd') {
-					this.bikers.get(0).turn(1);
-				}
-
-			}
-
-		}
 
 		this.tick();
 
@@ -67,7 +42,7 @@ class System {
 
 	void tick() {
 
-		if (this.over) {
+		if (this.winner != 999) {
 			return;
 		}
 
@@ -83,12 +58,13 @@ class System {
 
 	void draw() {
 
-		if (this.over) {
+		if (this.winner != 999) {
 
 			fill(0);
 			rect(0, 0, width, height);
 			fill(255);
-			text("GAME OVER", width / 2, height / 2);
+			this.bikers.get(this.winner).draw();
+			text("WINNER", 120, 120);
 
 			return;
 
@@ -106,6 +82,14 @@ class System {
 
 		for (int i = 0; i < this.portals.size(); i++) {
 			this.portals.get(i).draw();
+		}
+
+		if (!this.started) {
+			fill(0, 60);
+			rect(0, 0, width * 2, height * 2);
+			fill(255);
+			text("Trap Your Friends with Portals", 24, 480);
+			text("And then kill them", 24, 540);
 		}
 
 	}
@@ -135,6 +119,12 @@ class System {
 		}
 
 		this.portals.add(p);
+
+	}
+
+	void over(int index) {
+
+		this.winner = index;
 
 	}
 

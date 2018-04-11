@@ -4,6 +4,7 @@ class Biker extends Item {
 
 	PImage tile;
 	int index;
+	int life;
 	int dir;
 	int length;
 	boolean turned;
@@ -14,7 +15,8 @@ class Biker extends Item {
 
 		super(system, x, y);
 		this.index = index;
-		this.tile = loadImage("biker" + Integer.toString(this.index) + ".png");
+		this.tile = loadImage("lbiker" + Integer.toString(this.index) + ".png");
+		this.life = 1;
 		this.dir = dir;
 		this.turned = false;
 		this.teleported = false;
@@ -82,7 +84,13 @@ class Biker extends Item {
 			Trail t = (Trail) i;
 
 			if (t.index != this.index) {
-				this.system.over = true;
+
+				this.life -= 1;
+
+				if (this.life == 0) {
+					this.system.over(t.index);
+				}
+
 			}
 
 		} else if (i instanceof Portal) {

@@ -8,7 +8,7 @@ class Portal extends Item {
 	Portal(System system, int x, int y) {
 
 		super(system, x, y);
-		this.tile = loadImage("portal.png");
+		this.tile = loadImage("lportal.gif");
 		this.dest = null;
 
 	}
