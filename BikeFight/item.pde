@@ -27,16 +27,18 @@ class Item {
 
 	void bound() {
 
-		if (this.x > this.system.w) {
-			this.x = 0;
-		} else if (this.x < 0) {
-			this.x = this.system.w;
+		int margin = 1;
+
+		if (this.x > this.system.w - margin) {
+			this.x = margin;
+		} else if (this.x < margin) {
+			this.x = this.system.w - margin;
 		}
 
-		if (this.y > this.system.h) {
-			this.y = 0;
-		} else if (this.y < 0) {
-			this.y = this.system.h;
+		if (this.y > this.system.h - margin) {
+			this.y = margin;
+		} else if (this.y < margin) {
+			this.y = this.system.h - margin;
 		}
 
 	}
