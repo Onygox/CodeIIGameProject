@@ -1,5 +1,8 @@
 // wengwengweng
 
+import processing.sound.*;
+
+Sound sound;
 System system;
 
 void setup() {
@@ -12,6 +15,9 @@ void setup() {
 	frameRate(7);
 
 	system = new System();
+	sound = new Sound();
+	sound.add(new SoundFile(this, "hit.wav"));
+	sound.add(new SoundFile(this, "teleport.wav"));
 
 }
 

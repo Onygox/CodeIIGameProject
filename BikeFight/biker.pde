@@ -86,6 +86,7 @@ class Biker extends Item {
 			if (t.index != this.index) {
 
 				this.life -= 1;
+				sound.play(0);
 
 				if (this.life == 0) {
 					this.system.over(t.index);
@@ -103,6 +104,7 @@ class Biker extends Item {
 
 			if (p.dest != null) {
 
+				sound.play(1);
 				this.teleported = true;
 				this.x = p.dest.x;
 				this.y = p.dest.y;
